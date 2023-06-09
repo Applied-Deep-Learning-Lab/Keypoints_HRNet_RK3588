@@ -86,7 +86,6 @@ def keypoints_from_heatmaps(heatmaps, model_size):
 
 def decode(outputs, model_size, num_clusses, batch_size=1):
     preds, maxvals = keypoints_from_heatmaps(outputs, model_size)
-    # all_preds = np.zeros((batch_size, preds.shape[1], 3), dtype=np.float32)
     all_preds = np.zeros((batch_size, num_clusses, 3), dtype=np.float32)
     all_preds[:, :, 0:2] = preds[:, :num_clusses, 0:2]
     all_preds[:, :, 2:3] = maxvals[:,:num_clusses,:]
