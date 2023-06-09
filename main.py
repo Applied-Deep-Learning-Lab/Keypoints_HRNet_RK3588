@@ -159,5 +159,6 @@ if __name__ == "__main__":
     runTime_ms = runTime * 1000
     if TIME:
         print("Postprocess Time:", runTime_ms, "ms")
+    print("- Complete -")
 
 
