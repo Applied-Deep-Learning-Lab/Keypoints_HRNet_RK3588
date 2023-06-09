@@ -6,8 +6,6 @@ import time
 import numpy as np
 
 
-LABEL_SHOW = False
-
 def parse_args():
     parser = argparse.ArgumentParser(description='Run a pose model')
     parser.add_argument('model', help='weights file path')
@@ -18,6 +16,8 @@ def parse_args():
                                 type=int, default=17)
     parser.add_argument('--work-dir', help='the dir to save result', 
                                 default='./results')
+    parser.add_argument('--time', help='show inference & postprocess time', 
+                                default=False)
     args = parser.parse_args()
     return args
 
@@ -25,23 +25,11 @@ def transform_preds(coords, width, model_size):
     """Get final keypoint predictions from heatmaps and apply scaling and
     translation to map them back to the image.
 
-    Note:
-        num_keypoints: K
-
     Args:
         coords (np.ndarray[k, ndims]):
 
-        * If ndims=2, corrds are predicted keypoint location.
-        * If ndims=4, corrds are composed of (x, y, scores, tags)
-        * If ndims=5, corrds are composed of (x, y, scores, tags,
-            flipped_tags)
-
-        center (np.ndarray[2, ]): Center of the bounding box (x, y).
-        scale (np.ndarray[2, ]): Scale of the bounding box
-            wrt [width, height].
-        output_size (np.ndarray[2, ] | list(2,) Size of the
-            destination heatmaps.
-        use_udp (bool): Use unbiased data processing
+        width (int): size of output predictions
+        model_size (int): input size of model
 
     Returns:
         np.ndarray: Predicted coordinates in the images.
@@ -108,32 +96,9 @@ def draw(bgr, predict_dict, out_dir, show_labels=False):
     for all_pred in predict_dict:
         for x,y,s in all_pred:
             cv2.circle(bgr, (int(x), int(y)), 3, (0, 255, 120), -1)
-    if show_labels:
-        bgr = draw_label(bgr, predict_dict)
     num = len(os.listdir(out_dir))
     cv2.imwrite(f"{out_dir}/result_{num}.jpg", bgr)
 
-def draw_label(img, predict_dict):
-    # font
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    # fontScale
-    fontScale = 0.25
-    # Blue color in BGR
-    color = (255, 0, 0)
-    # Line thickness of 2 px
-    thickness = 1
-    # shift
-    s = 10
-    
-    for obj in predict_dict:
-        num = 1
-        for point in obj:
-            if num % 4 == 0:
-                org = (int(point[0])-s, int(point[1])-s)
-                cv2.putText(img, str(num), org, font, 
-                    fontScale, color, thickness, cv2.LINE_AA)
-            num += 1
-    return img
 
 if __name__ == "__main__":
     # Get parameters
@@ -143,6 +108,7 @@ if __name__ == "__main__":
     OUT_DIR = args.work_dir
     MODEL_SIZE = args.size
     NUM_CLUSSES = args.num_clusses
+    TIME = args.time
 
     # Create RKNN object
     rknn = RKNNLite()
@@ -178,7 +144,8 @@ if __name__ == "__main__":
     end = time.time()
     runTime = end - start
     runTime_ms = runTime * 1000
-    print("Inference Time:", runTime_ms, "ms")
+    if TIME:
+        print("Inference Time:", runTime_ms, "ms")
     
     if not os.path.isdir(OUT_DIR):
         os.mkdir(OUT_DIR)
@@ -187,10 +154,11 @@ if __name__ == "__main__":
     print("--> Running postprocess")
     start = time.time()
     predict_dict = decode(outputs, MODEL_SIZE, NUM_CLUSSES)
-    out_img = draw(img, predict_dict, OUT_DIR, LABEL_SHOW)
+    out_img = draw(img, predict_dict, OUT_DIR)
     end = time.time()
     runTime = end - start
     runTime_ms = runTime * 1000
-    print("Postprocess Time:", runTime_ms, "ms")
+    if TIME:
+        print("Postprocess Time:", runTime_ms, "ms")
 
 
