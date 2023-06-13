@@ -12,7 +12,7 @@
   </summary>   
 	<b>We provide a solution for launching Keypoints Search (Pose Estimation) neural networks on RK3588.<br>
 	<b>The process for preparing the edge device is described below.<br>
-	<b>We also provide a quick guide to training and converting models.<br>
+	<b>We also provide a quick guide to converting models.<br>
 	<b><br>  	
 	Example:
 	<div>
