@@ -91,7 +91,7 @@ def decode(outputs, model_size, num_clusses, batch_size=1):
     all_preds[:, :, 2:3] = maxvals[:,:num_clusses,:]
     return all_preds
 
-def draw(bgr, predict_dict, out_dir, show_labels=False):
+def draw(bgr, predict_dict, out_dir):
     for all_pred in predict_dict:
         for x,y,s in all_pred:
             cv2.circle(bgr, (int(x), int(y)), 3, (0, 255, 120), -1)
