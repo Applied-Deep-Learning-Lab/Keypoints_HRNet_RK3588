@@ -164,6 +164,14 @@
 						--output-file <path/to/model.onnx> \
 						--shape 1 3 <model_size> <model_size>
       ```
+      Example:
+      ```
+      mim download mmpose --config associative_embedding_hrnet_w32_coco_512x512  --dest .
+      python tools/deployment/pytorch2onnx.py associative_embedding_hrnet_w32_coco_512x512.py \
+						hrnet_w32_coco_512x512-bcb8c247_20200816.pth \
+						--output-file human_pose.onnx \
+						--shape 1 3 512 512
+      ```
 
   * ### Convert onnx to rknn
 
@@ -187,6 +195,11 @@
       # For more precise conversion settings, 
       # check the additional options in the help:
       # python onnx2rknn.py -h
+      ```
+							
+      Example:
+      ```
+      python onnx2rknn.py human_pose.onnx
       ```
       
 
