@@ -180,7 +180,7 @@
       pip install install/rknn_toolkit2-1.5.0+1fa95b5c-cp38-cp38-linux_x86_64.whl
       ```
 
-      Step 3. For convert your *.onnx* model to *.rknn* run **onnx2rknn.py** like:
+      Step 3. For convert your *.onnx* model to *.rknn* run ``onnx2rknn.py`` like:
       ```
       python onnx2rknn.py <path/to/model.onnx>
       
