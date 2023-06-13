@@ -16,8 +16,8 @@
 	<b><br>  	
 	Example:
 	<div>
-		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/b0af2540-a7ba-4c22-824e-39b4b9212886" width=350 alt="human" />
-		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/65cacd91-1e83-4955-bd15-ce07586b2716" width=350 alt="kphuman" />
+		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/1e1990d8-2f81-40ac-9486-2f73f7ac62d4" width=350 alt="human" />
+		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/9498b4af-b709-4187-9bdd-e4a2d2afa522" width=350 alt="kphuman" />
 	</div>
 		
 </details>
