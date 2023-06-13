@@ -1,5 +1,5 @@
 <h1>
-    Keypoints_RK3588
+    Keypoints_HRNet_RK3588
 </h1>
 
 <details open>
@@ -16,8 +16,8 @@
 	<b><br>  	
 	Example:
 	<div>
-		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_RK3588/assets/109062816/b0af2540-a7ba-4c22-824e-39b4b9212886" width=350 alt="human" />
-		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_RK3588/assets/109062816/65cacd91-1e83-4955-bd15-ce07586b2716" width=350 alt="kphuman" />
+		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/b0af2540-a7ba-4c22-824e-39b4b9212886" width=350 alt="human" />
+		<img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588/assets/109062816/65cacd91-1e83-4955-bd15-ce07586b2716" width=350 alt="kphuman" />
 	</div>
 		
 </details>
@@ -77,8 +77,8 @@
 
   Clone repository:
   ```
-  git clone https://github.com/Applied-Deep-Learning-Lab/Keypoints_RK3588 
-  cd Keypoints_RK3588
+  git clone https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588 
+  cd Keypoints_HRNet_RK3588
   ```
 
   Install RKNN-Toolkit2-Lite
@@ -116,12 +116,13 @@
 
 </details>
 
+
 <details>
   <summary>
     <h2>
       <p>
-        4. Train keypoints model
-        <img src="https://github.com/Applied-Deep-Learning-Lab/Keypoints_RK3588/assets/109062816/b7cb0f92-5084-47ab-876d-c66512e0b625" width=38 height=38 alt="Trainer" />
+        4. Convert pytorch model to onnx to rknn
+        <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fds2converter.com%2Fwp-content%2Fuploads%2F2015%2F07%2Fconvert-icon.png&f=1&nofb=1&ipt=d6dbe833ced7274d7335d067ba819d63567e853dc093822f5cda0d18df3bfbdf&ipo=images" width=38 height=38 alt="Converter" />
       </p>
     </h2>
   </summary>
@@ -153,191 +154,6 @@
       pip install numpy==1.23.5
       ```
 
-  * ### Create custom dataset
-
-      You need create custom dataset for train your model.
-      
-      Step 1. Create a dataset directory like this:
-      ```
-      mmpose
-	├── mmpose
-	├── docs
-	├── tests
-	├── tools
-	├── configs
-	`── data
-	    │── coco
-		│-- annotations
-		│   │-- train.json
-		│   |-- val.json
-		│   |-- test.json
-		│-- train
-		│   │-- 000000000009.jpg
-		│   │-- 000000000025.jpg
-		│   │-- 000000000030.jpg
-		│   │-- ...
-		│-- val
-		│   │-- 000000000139.jpg
-		│   │-- 000000000285.jpg
-		│   │-- 000000000632.jpg
-		│   │-- ...
-		`-- test
-		    │-- ...
-      ```
-      
-      json annotation files should have a similar structure:
-      ```
-	{"licenses": [
-	    {"name": "", 
-	     "id": 0, 
-	     "url": ""}], 
-	 "info": {"contributor": "", 
-		  "date_created": "", 
-		  "description": "", 
-		  "url": "", 
-		  "version": "", 
-		  "year": ""}, 
-	 "categories": [
-	     {"id": 1, 
-	      "name": "pprofile", 
-	      "supercategory": "", 
-	      "keypoints": ["1", "2", "3", "4", 
-		            ..., 
-		            "29", "30", "31", "32"], 
-	      "skeleton": [[25, 23], [3, 4], [26, 27], [16, 17], 
-		           ..., 
-		           [5, 29], [7, 8], [30, 31], [25, 26]]}, 
-	 ], 
-	 "images": [
-	     {"id": 1, "width": 3510, "height": 2550, "file_name": "1.png", 
-	      "license": 0, "flickr_url": "", "coco_url": "", "date_captured": 0}, 
-	     ..., 
-	     {"id": 7, "width": 3510, "height": 2550, "file_name": "7.png", 
-	      "license": 0, "flickr_url": "", "coco_url": "", "date_captured": 0}], 
-	"annotations": [
-	    {"id": 1, 
-	     "image_id": 1, 
-	     "category_id": 1, 
-	     "segmentation": [[1246.46, 1003.59, 1249.88, 1002.83, 1267.11, 1002.32,
-		             ..., 
-		             1236.96, 1017.27, 1239.87, 1011.57, 1242.41, 1005.87]], 
-	     "area": 186851.55839999986, 
-	     "bbox": [1237.94, 1002.38, 923.91, 202.24], 
-	     "iscrowd": 0, 
-	     "attributes": {"occluded": false}, 
-	     "keypoints": [1240.94, 1008.88, 2, 1365.4, 1012.28, 2, 1484.1, 1010.12, 2, 
-		          ...,
-		          1772.73, 1058.51, 2, 1830.53, 1049.85, 2, 1942.12, 1062.11, 2],
-	     "num_keypoints": 32},
-	    {"id": 2, 
-	     "image_id": 2, 
-	     "category_id": 1, 
-	     "segmentation": 
-	     ...},
-	     ...]}
-      ```
-      
-      Step 2. Create config file for your data and goal.
-      You can take and change the ready-made config:
-      ```
-      mim download mmpose --config associative_embedding_hrnet_w32_coco_512x512  --dest .
-      ```
-      You can make minimum changes in config for run training your model. 
-      Change the following settings as needed:
-      ```
-      # Change the name of the dataset to the existing
-      dataset_info['dataset_name']='BottomUpCocoDataset'
-
-      # Change the information about keypoints and skeleton 
-      # by analogy with the example as you need
-      dataset_info['keypoint_info']=<keypoints_dict>
-      dataset_info['skeleton_info']=<skeleton_dict>
-      
-      # Weights and sigmas is a "importance measure" of each key point. 
-      # Feel free to experiment or set everything to 1.
-      dataset_info['keypoint_info']=[1]*<num_keypoints>
-      dataset_info['skeleton_info']=[1]*<num_keypoints>
-      
-      # Set information about your points in channel_cfg. 
-      channel_cfg = dict(
-          num_output_channels=<num_keypoints>,
-          dataset_joints=<num_keypoints>,
-          dataset_channel=[[<all_keypoints_ids>]],
-          inference_channel=[<all_keypoints_ids>])
-      
-      # Set information about your points and input image size in data_cfg.
-      data_cfg = dict(
-		image_size=512,
-		base_size=256,
-		base_sigma=2,
-		heatmap_size=[128],
-		num_joints=<num_keypoints>,
-		dataset_channel=[[<all_keypoints_ids>]],
-		inference_channel=[<all_keypoints_ids>],
-		...)
-	
-      # Set your parameters in model dict
-      model['keypoint_head']['num_joints']=channel_cfg['dataset_joints']
-      
-      # Perhaps you should strip 'flip_index' from {val, test}_pipeline['meta_keys'] 
-      # if your dataset doesn't have flip.
-      
-      # Specify the path to the directory with your dataset
-      data_root = 'data/<dataset_folder>'
-      
-      # Set data dict
-      data = dict(
-		workers_per_gpu=2,
-		train_dataloader=dict(samples_per_gpu=4),
-		val_dataloader=dict(samples_per_gpu=1),
-		test_dataloader=dict(samples_per_gpu=1),
-	train=dict(
-		type=dataset_info['dataset_name'],
-		ann_file=f'{data_root}/train.json',
-		img_prefix=f'{data_root}/train/',
-		data_cfg=data_cfg,
-		pipeline=train_pipeline,
-		dataset_info=dataset_info),
-	val=dict(
-		type=dataset_info['dataset_name'],
-		ann_file=f'{data_root}/val.json',
-		img_prefix=f'{data_root}/val/',
-		data_cfg=data_cfg,
-		pipeline=val_pipeline,
-		dataset_info=dataset_info),
-	test=dict(
-		type=dataset_info['dataset_name'],
-		ann_file=f'{data_root}/test.json',
-		img_prefix=f'{data_root}/test/',
-		data_cfg=data_cfg,
-		pipeline=test_pipeline,
-		dataset_info=dataset_info))
-      ```
-      Step 3. Run training
-      ```
-      python tools/train.py <path/to/config.py>
-      ```
-      
-      You can check your model:
-      ```
-      python demo/bottom_up_img_demo.py <path/to/config.py> \
-      					<path/to/model.pth> \
-      					--img-path <path/to/image.jpg> \
-      					--out-img-root <path/to/results/folder>
-      ```
-</details>
-
-
-<details>
-  <summary>
-    <h2>
-      <p>
-        5. Convert pytorch model to onnx to rknn
-        <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fds2converter.com%2Fwp-content%2Fuploads%2F2015%2F07%2Fconvert-icon.png&f=1&nofb=1&ipt=d6dbe833ced7274d7335d067ba819d63567e853dc093822f5cda0d18df3bfbdf&ipo=images" width=38 height=38 alt="Converter" />
-      </p>
-    </h2>
-  </summary>
-
   * ### Convert pytorch to onnx
 	
 
@@ -359,8 +175,8 @@
       
       Step 2. Install RKNN-Toolkit2
       ```
-      git clone https://github.com/Applied-Deep-Learning-Lab/Keypoints_RK3588
-      cd Keypoints_RK3588
+      git clone https://github.com/Applied-Deep-Learning-Lab/Keypoints_HRNet_RK3588
+      cd Keypoints_HRNet_RK3588
       pip install install/rknn_toolkit2-1.5.0+1fa95b5c-cp38-cp38-linux_x86_64.whl
       ```
 
